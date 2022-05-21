@@ -13,22 +13,17 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('themes', function (Blueprint $table) {
             $table->uuid('id');
             $table->primary('id');
-            $table->string('name');
-            $table->string('username')->unique();
-            //nullable for vendors
-            $table->string('email')->nullable()->unique();
-            $table->string('password');
-            $table->string('shop_id')->nullable();
+            $table->string('shop_id');
+            $table->string('color');
+            $table->string('logo');
+            $table->string('cover');
             $table->foreign('shop_id')
                 ->references('id')
                 ->on('shops')
-                ->onUpdate('cascade')
                 ->onDelete('cascade');
-            $table->timestamp('email_verified_at')->nullable();
-            $table->rememberToken();
             $table->timestamps();
         });
     }
@@ -40,6 +35,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('themes');
     }
 };

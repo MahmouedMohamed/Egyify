@@ -13,23 +13,21 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('orders', function (Blueprint $table) {
             $table->uuid('id');
             $table->primary('id');
-            $table->string('name');
-            $table->string('username')->unique();
-            //nullable for vendors
-            $table->string('email')->nullable()->unique();
-            $table->string('password');
-            $table->string('shop_id')->nullable();
+            $table->string('shop_id');
+            $table->string('user_id');
+            $table->boolean('served')->default(0);
+            $table->timestamps();
             $table->foreign('shop_id')
                 ->references('id')
                 ->on('shops')
-                ->onUpdate('cascade')
                 ->onDelete('cascade');
-            $table->timestamp('email_verified_at')->nullable();
-            $table->rememberToken();
-            $table->timestamps();
+            $table->foreign('user_id')
+                ->references('id')
+                ->on('users')
+                ->onDelete('cascade');
         });
     }
 
@@ -40,6 +38,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('orders');
     }
 };
